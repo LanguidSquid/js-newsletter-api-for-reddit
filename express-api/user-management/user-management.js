@@ -1,30 +1,17 @@
 var express = require("express");
-
-let data = {
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "firstname": "John",
-  "lastname": "Doe",
-  "email": "john.doe@mailinator.com",
-  "subreddits": [
-    "string"
-  ],
-  "enrolled": true
-};
+var userMapper = require("../mapper/usermapper.js");
 
 let setGetUsers = function(app) {
   app.get("/user", async(req, res, next) => {
     try{
-      console.log("hello blakes");
+      let all = await User.find();
+      let responseArray = [];
 
-      return("hai");
+      all.forEach((item, i) => {
+        responseArray.push(userMapper.mapUserToUserResponse(item));
+      });
 
-      let allUsers = await User.find();
-
-      console.log(allUsers);
-
-      res.json(allUsers);
-
-      return res;
+      res.json(responseArray);
     }catch(error){
       console.log(error);
       return next(error);
@@ -32,21 +19,96 @@ let setGetUsers = function(app) {
   });
 }
 
-let setGetUsersByName = function(app) {
-  app.get("/user/name", (req, res, next) => {
-      console.log("hello blakes");
+let setPostUser = function(app) {
+  app.post("/user", async(req, res, next) => {
+      let exists = await User.find({id: req.body.id});
 
-      return("hai");
+      let newUser;
 
-      res.json("hai")
+      if(exists.length === 0){
+        newUser = new User(
+          {
+            id: req.body.id,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            subreddits: req.body.subreddits,
+            enrolled: req.body.enrolled
+          }
+        );
 
-      return res;
+        newUser = await newUser.save();
+      }
+
+      newUser = userMapper.mapUserToUserResponse(newUser);
+
+      res.json(newUser);
+  });
+}
+
+let setGetUserById = function(app) {
+  app.get("/user/:id", async(req, res, next) => {
+      let exists = await User.find({id: req.params.id});
+
+      let userResponse;
+
+      if(exists.length === 0){
+          userResponse = null;
+      }else{
+          userResponse = userMapper.mapUserToUserResponse(exists[0]);
+      }
+
+      res.json(userResponse);
+  });
+}
+
+let setPutUserById = function(app) {
+  app.put("/user/:id", async(req, res, next) => {
+    try{
+      let exists = await User.find({id: req.params.id});
+
+      if(exists.length === 1){
+        exists = exists[0];
+
+        exists.firstname = req.body.firstname;
+        exists.lastname = req.body.lastname;
+        exists.email = req.body.email;
+        exists.subreddits = req.body.subreddits;
+        exists.enrolled = req.body.enrolled;
+
+        exists = await exists.save();
+      }
+
+      exists = userMapper.mapUserToUserResponse(exists);
+
+      res.json(exists);
+    }catch(error){
+      console.log(error);
+      return next(error);
+    }
+  });
+}
+
+let setDeleteUserById = function(app) {
+  app.delete("/user/:id", async(req, res, next) => {
+    try{
+      let deletedUser = await User.find({id: req.params.id});
+      await User.deleteOne({id: req.params.id});
+
+      res.json(userMapper.mapUserToUserResponse(deletedUser[0]));
+    }catch(error){
+      console.log(error);
+      return next(error);
+    }
   });
 }
 
 var init = function(app) {
   setGetUsers(app);
-  setGetUsersByName(app);
+  setPostUser(app);
+  setGetUserById(app);
+  setPutUserById(app);
+  setDeleteUserById(app);
 };
 
 exports.init = init;

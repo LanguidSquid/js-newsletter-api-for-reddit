@@ -14,8 +14,6 @@ const userSchema = new mongoose.Schema({
     String
   ],
   enrolled: Boolean
-}, {
-  capped: { size: 1024 }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -30,7 +28,7 @@ let sampleUser = new User({
   "lastname": "Doe",
   "email": "john.doe@mailinator.com",
   "subreddits": [
-    "string"
+    "funny"
   ],
   "enrolled": true
 });
