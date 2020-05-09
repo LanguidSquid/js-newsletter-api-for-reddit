@@ -1,0 +1,182 @@
+swagger: "2.0"
+info:
+  description: "An express-based API for interfacing with Reddit Newsletter App"
+  version: "1.0.0"
+  title: "Reddit Newsletter API"
+  contact:
+    email: "blakecameronyarbrough@gmail.com"
+  license:
+    name: "MIT"
+    url: "git URL"
+host: "localhost"
+basePath: "/v1"
+tags:
+- name: "user-management"
+schemes:
+- "https"
+paths:
+  /user:
+    get:
+      tags:
+      - "user-management"
+      summary: "Get all users"
+      description: ""
+      operationId: "getUsers"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation response"
+          schema:
+            $ref: '#/definitions/MultipleUserResponse'
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+    post:
+      tags:
+      - "user-management"
+      summary: "Create a new user"
+      description: "This API Resource creates a new user in the Reddit Newsletter Application"
+      operationId: "createUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation response"
+          schema:
+            $ref: '#/definitions/SingleUserResponse'
+  /user/{id}:
+    get:
+      tags:
+      - "user-management"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "200":
+          description: "successful operation response"
+          schema:
+            $ref: '#/definitions/SingleUserResponse'
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+    put:
+      tags:
+      - "user-management"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+        format: "uuid"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation response"
+          schema:
+            $ref: '#/definitions/SingleUserResponse'
+        "404":
+          description: "User not found"
+    delete:
+      tags:
+      - "user-management"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "200":
+          description: "successful operation response"
+          schema:
+            $ref: '#/definitions/SingleUserResponse'
+        "404":
+          description: "User not found"
+definitions:
+  User:
+    type: "object"
+    required:
+    - "firstname"
+    - "lastname"
+    - "email"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      firstname:
+        type: "string"
+        example: "John"
+      lastname:
+        type: "string"
+        example: "Doe"
+      email:
+        type: "string"
+        example: "john.doe@mailinator.com"
+      subreddits:
+        type: array
+        items:
+          type: string
+      enrolled:
+        type: boolean
+        example: true
+        default: false
+  SingleUserResponse:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        example: "USER.001"
+      data:
+        $ref: '#/definitions/User'
+      message:
+        type: "string"
+  MultipleUserResponse:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        example: "USER.001"
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/User'
+      message:
+        type: "string"

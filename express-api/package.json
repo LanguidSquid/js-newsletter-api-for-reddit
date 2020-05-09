@@ -1,0 +1,15 @@
+{
+  "name": "express-api",
+  "version": "1.0.0",
+  "description": "An express-based API for interfacing with Reddit Newsletter App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Blake Yarbrough",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "5.9.12"
+  }
+}
