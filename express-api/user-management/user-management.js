@@ -1,6 +1,15 @@
 var express = require("express");
 var userMapper = require("../mapper/usermapper.js");
 
+class ResponseObject {
+  constructor(message, data){
+    // Whole lotta good this is
+    this.code = "USER.001"
+    this.message = message;
+    this.data = data;
+  }
+}
+
 let setGetUsers = function(app) {
   app.get("/user", async(req, res, next) => {
     try{
@@ -11,7 +20,12 @@ let setGetUsers = function(app) {
         responseArray.push(userMapper.mapUserToUserResponse(item));
       });
 
-      res.json(responseArray);
+      let response = new ResponseObject(
+        "Users retrieved successfully!",
+        responseArray
+      );
+
+      res.json(response);
     }catch(error){
       console.log(error);
       return next(error);
@@ -42,7 +56,12 @@ let setPostUser = function(app) {
 
       newUser = userMapper.mapUserToUserResponse(newUser);
 
-      res.json(newUser);
+      let response = new ResponseObject(
+        "Users created successfully!",
+        newUser
+      );
+
+      res.json(response);
   });
 }
 
@@ -52,13 +71,25 @@ let setGetUserById = function(app) {
 
       let userResponse;
 
+      let response
+
       if(exists.length === 0){
-          userResponse = null;
+          response = new ResponseObject(
+            "User not found!",
+            null
+          );
+          res.status(404);
+          res.json(response);
       }else{
           userResponse = userMapper.mapUserToUserResponse(exists[0]);
-      }
 
-      res.json(userResponse);
+          response = new ResponseObject(
+            "User retrieved successfully!",
+            userResponse
+          );
+          res.status(400);
+          res.json(response);
+      }
   });
 }
 
@@ -81,7 +112,12 @@ let setPutUserById = function(app) {
 
       exists = userMapper.mapUserToUserResponse(exists);
 
-      res.json(exists);
+      let response = new ResponseObject(
+        "User updated successfully!",
+        exists
+      );
+
+      res.json(response);
     }catch(error){
       console.log(error);
       return next(error);
@@ -95,7 +131,12 @@ let setDeleteUserById = function(app) {
       let deletedUser = await User.find({id: req.params.id});
       await User.deleteOne({id: req.params.id});
 
-      res.json(userMapper.mapUserToUserResponse(deletedUser[0]));
+      let response = new ResponseObject(
+        "User deleted successfully!",
+        userMapper.mapUserToUserResponse(deletedUser[0])
+      );
+
+      res.json(response);
     }catch(error){
       console.log(error);
       return next(error);
