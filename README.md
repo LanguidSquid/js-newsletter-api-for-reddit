@@ -1,9 +1,11 @@
 # Reddit Newsletter API
 
 ## Getting Started
+```
 cd express-api
 docker build -t <your username>/express-api .
 docker run -p 49160:3000 -d <your username>/express-api
+```
 
 ## Make Volume Shareable for Mongo Container
 On Mac

@@ -11,12 +11,42 @@ let data = {
   "enrolled": true
 };
 
-let getUsers = function(req, res, next) {
-  res.json(data);
-};
+let setGetUsers = function(app) {
+  app.get("/user", async(req, res, next) => {
+    try{
+      console.log("hello blakes");
+
+      return("hai");
+
+      let allUsers = await User.find();
+
+      console.log(allUsers);
+
+      res.json(allUsers);
+
+      return res;
+    }catch(error){
+      console.log(error);
+      return next(error);
+    }
+  });
+}
+
+let setGetUsersByName = function(app) {
+  app.get("/user/name", (req, res, next) => {
+      console.log("hello blakes");
+
+      return("hai");
+
+      res.json("hai")
+
+      return res;
+  });
+}
 
 var init = function(app) {
-  app.get("/user", getUsers);
+  setGetUsers(app);
+  setGetUsersByName(app);
 };
 
 exports.init = init;
