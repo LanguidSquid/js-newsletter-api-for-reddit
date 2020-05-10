@@ -19,7 +19,7 @@ export REDDIT_PASSWORD='{your-app-password}'
 7. go to `/express-api/mail/mailer.js` and update `msg.from` to be your preferred sender email
 8. `docker pull mongo`
 9. `docker run -d -p 27017:27017 --name mongo mongo`
-10. from `/express-api/` run `node-server.js`
+10. from `/express-api` run `node-server.js`
 11. Import postman collection and environment from `/postman` directory to execute CRUD operations on emailer data
 
 ## Tips
