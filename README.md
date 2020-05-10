@@ -22,12 +22,15 @@ export REDDIT_PASSWORD='{your-app-password}'
 10. from `/express-api/` run `node-server.js`
 11. Import postman collection and environment from `/postman` directory to execute CRUD operations on emailer data
 
-## Tip
+## Tips
 
 You can configure the time to be other than every day at 8 am by editing `/express-api/scheduler/scheduler.js`  
 
 You can use convenient email services like https://www.dispostable.com to receive multiple emails to several clients  
-* See 'easy.to.guess@dispostable.com' for some historical example emails
+
+See 'easy.to.guess@dispostable.com' for some historical example emails  
+
+Swagger is in root directory `reddit-newsletter-api.yaml`. 
 
 #### Technologies
 * node.js
