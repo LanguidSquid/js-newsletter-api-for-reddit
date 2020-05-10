@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var userManagement = require("./user-management/user-management.js");
+var redditAuthenticator = require("./reddit/authenticator.js");
 var globalInitializer = require("./globals/globals.js");
 var scheduler = require("./scheduler/scheduler.js");
 
@@ -24,3 +25,4 @@ app.listen(PORT, HOST, () => {
 globalInitializer.init();
 userManagement.init(app);
 scheduler.initiateSchedule();
+redditAuthenticator.authenticate();

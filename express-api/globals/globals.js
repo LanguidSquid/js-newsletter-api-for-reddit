@@ -44,4 +44,9 @@ var init = function() {
   global.mongoose = mongoose;
 };
 
+var setAccessToken = function(accessToken) {
+  global.accessToken = accessToken;
+};
+
+exports.setAccessToken = setAccessToken;
 exports.init = init;

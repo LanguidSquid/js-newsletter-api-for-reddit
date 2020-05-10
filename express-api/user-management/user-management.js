@@ -16,6 +16,8 @@ let setGetUsers = function(app) {
       let all = await User.find();
       let responseArray = [];
 
+      console.log(accessToken);
+
       all.forEach((item, i) => {
         responseArray.push(userMapper.mapUserToUserResponse(item));
       });
