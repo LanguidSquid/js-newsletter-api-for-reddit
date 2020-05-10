@@ -15,7 +15,7 @@ var userDataAggregator = require('../reddit/user-data-aggregator.js');
 */
 
 let initiateSchedule = function(){
-  schedule.scheduleJob('50 * * * * *', function(){
+  schedule.scheduleJob('0 0 8 * * *', function(){
     let getusers = async() => {
       return await User.find();
     }
