@@ -1,4 +1,6 @@
-var schedule = require("node-schedule");
+var schedule = require('node-schedule');
+var emailView = require('../views/email-view.js');
+var userDataAggregator = require('../reddit/user-data-aggregator.js');
 
 /**
 *    *    *    *    *    *
@@ -13,7 +15,13 @@ var schedule = require("node-schedule");
 */
 
 let initiateSchedule = function(){
-  schedule.scheduleJob('* * * * * *', function(){
+  schedule.scheduleJob('50 * * * * *', function(){
+    let getusers = async() => {
+      return await User.find();
+    }
+
+    getusers().then(userDataAggregator.getDigestAndSendEmailForUsers);
+
     console.log(new Date());
   });
 };

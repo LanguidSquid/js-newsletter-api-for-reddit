@@ -1,0 +1,34 @@
+<html>
+<head class="center">
+  <h1>Reddit Newsletter</h1>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <style type="text/css">
+    .votes {
+      background-color: #0D98BA;
+      /* color: #4682B4; */
+      border-radius: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div id="greeting">
+    <p>Hello {{name}},</p> <p>See yesterday's top voted posts from your favorite subreddits</p>
+  </div>
+  <div id="digest">
+    {{#each subreddits}}
+    <span name="subreddit-header">
+      <b>{{name}}:</b> <a href="https://www.reddit.com/r/{{name}}/top">https://www.reddit.com/r/{{name}}/top</a><br/>
+      {{#each posts}}
+        {{!-- Image --}}
+        <img height="480" src="{{imageurl}}"/><br/>
+        {{!-- Votes --}}
+        <span class="votes" name="votes">{{ups}} up votes</span>
+        {{!-- Title --}}
+        <span name="title">{{title}}</span><br/>
+      {{/each}}
+    </span>
+    {{/each}}
+  </div>
+
+</body>
+</html>
