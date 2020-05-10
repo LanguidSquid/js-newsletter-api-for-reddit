@@ -9,7 +9,6 @@ let mapToDigestTemplate = function(raw){
   digestSubreddit.posts = [];
 
   raw.data.children.forEach((item, i) => {
-    console.log(item);
     digestSubreddit.posts.push({
       title: item.data.title,
       ups: item.data.ups,
